@@ -42,3 +42,8 @@ Es un framework que nos da la estructura para compilar, testear e interactuar co
 5. Instala Truffle `npm install -g truffle`.
 
 6. Si usas el Truffle box de React [Instrucciones](https://www.trufflesuite.com/boxes/react).
+
+## Tienes Dudas
+`Crea un PR con tu pregunta en este archivo`
+
+* [Como creo un PR](https://www.youtube.com/watch?v=rgbCcBNZcdQ)
