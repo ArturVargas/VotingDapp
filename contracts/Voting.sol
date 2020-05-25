@@ -46,7 +46,7 @@ contract Voting {
     function results() public view returns (uint256, uint256[] memory) {
         uint256[] memory countedVotes;
         for (uint256 item = 0; item < options.length; item++) {
-            countedVotes[item] = (options[item].proposalVotes.length);
+            countedVotes[item] = options[item].proposalVotes.length;
         }
         return (totalVotes, countedVotes);
     }
