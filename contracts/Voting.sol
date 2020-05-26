@@ -30,10 +30,8 @@ contract Voting {
         options[1] = Proposal({id: 1, proposalVotes: emptyArray});
     }
 
-    function vote(uint256 _votedProposal) public {
-        // Verifica que el periodo de votacion este activo.
-        // El require hace correctamente la validación, pero descuenta gas al usuario.
-        require(now <= votingEndDate, "El periodo de votación finalizo");
+    function vote(uint256 _votedProposal) public votedBeforeEndDate() {
+
         if (voters[msg.sender].voted) {
             revert("Solo se permite emitir un voto por persona...!!!");
         }
@@ -53,5 +51,10 @@ contract Voting {
             countedVotes[item] = options[item].proposalVotes.length;
         }
         return (totalVotes, countedVotes);
+    }
+
+    modifier votedBeforeEndDate() {
+        require(now <= votingEndDate, "El periodo de votación finalizo");
+        _;
     }
 }
