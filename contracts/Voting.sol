@@ -13,7 +13,6 @@ contract Voting {
     }
 
     uint256 totalVotes = 0;
-    bool ended;
     uint256 votingEndDate;
     address public admin;
 
@@ -22,6 +21,8 @@ contract Voting {
 
     constructor() public {
         admin = msg.sender;
+        // Tiempo que durará la votación.
+        votingEndDate = now + 3 minutes;
 
         address[] memory emptyArray;
 
@@ -30,6 +31,9 @@ contract Voting {
     }
 
     function vote(uint256 _votedProposal) public {
+        // Verifica que el periodo de votacion este activo.
+        // El require hace correctamente la validación, pero descuenta gas al usuario.
+        require(now <= votingEndDate, "El periodo de votación finalizo");
         if (voters[msg.sender].voted) {
             revert("Solo se permite emitir un voto por persona...!!!");
         }
@@ -43,8 +47,8 @@ contract Voting {
         totalVotes++;
     }
 
-    function results() public view returns (uint256, uint256[] memory) {
-        uint256[] memory countedVotes;
+    function results() public view returns (uint256, uint256[2] memory) {
+        uint256[2] memory countedVotes;
         for (uint256 item = 0; item < options.length; item++) {
             countedVotes[item] = options[item].proposalVotes.length;
         }
