@@ -25,11 +25,30 @@ contract('Voting', () => {
     });
 
     it('should has two options', () => {
-
+      const options = await votingInstance.getOptions();
+      assert.equal(options, 2);
     });
   });
 
   describe('Vote function', () => {
+    it('should the voter has an account', () => {
+
+    });
+
+    it('should vote before end date', () => {
+
+    });
+
+    it('should the voter can vote if not vote yet', () => {
+
+    })
+
+    it('should the voter not vote more than once', () => {
+
+    })
+  });
+
+  describe('Results function', () => {
     
   })
 })

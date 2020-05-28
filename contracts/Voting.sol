@@ -30,6 +30,10 @@ contract Voting {
         options[1] = Proposal({id: 1, proposalVotes: emptyArray});
     }
 
+    function getOptions() public view returns(uint) {
+        return options.length;
+    }
+
     function vote(uint256 _votedProposal) public votedBeforeEndDate() {
 
         if (voters[msg.sender].voted) {
