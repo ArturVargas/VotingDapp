@@ -1,6 +1,6 @@
 const Voting = artifacts.require('Voting.sol');
 
-contract('Voting', () => {
+contract('Voting', (accounts) => {
   let votingInstance = null;
 
   before(async () => {
@@ -24,24 +24,22 @@ contract('Voting', () => {
       assert(address != '');
     });
 
-    it('should has two options', () => {
+    it('should has two options', async () => {
       const options = await votingInstance.getOptions();
       assert.equal(options, 2);
     });
   });
 
   describe('Vote function', () => {
-    it('should the voter has an account', () => {
-
+    it('should the voter has an account', async () => {
+      const voter = await votingInstance.getVoterDetails();
+      assert(voter.voterAddr.length > 0);
     });
 
-    it('should vote before end date', () => {
-
+    it('should not vote after end date', async () => {
+      const voter = await votingInstance.vote(0);
+    
     });
-
-    it('should the voter can vote if not vote yet', () => {
-
-    })
 
     it('should the voter not vote more than once', () => {
 

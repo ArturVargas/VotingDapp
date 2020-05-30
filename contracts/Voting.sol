@@ -30,12 +30,11 @@ contract Voting {
         options[1] = Proposal({id: 1, proposalVotes: emptyArray});
     }
 
-    function getOptions() public view returns(uint) {
+    function getOptions() public view returns (uint256) {
         return options.length;
     }
 
     function vote(uint256 _votedProposal) public votedBeforeEndDate() {
-
         if (voters[msg.sender].voted) {
             revert("Solo se permite emitir un voto por persona...!!!");
         }
@@ -60,5 +59,9 @@ contract Voting {
     modifier votedBeforeEndDate() {
         require(now <= votingEndDate, "El periodo de votación finalizo");
         _;
+    }
+
+    function getVoterDetails() public view returns (bool, address) {
+        return (voters[msg.sender].voted, voters[msg.sender].voterAddr);
     }
 }
