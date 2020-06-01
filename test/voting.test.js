@@ -38,27 +38,39 @@ contract('Voting', (accounts) => {
     });
 
     it('should vote', async () => {
-      await votingInstance.vote(1, { from: accounts[1] });
-      await votingInstance.vote(1, { from: accounts[2] });
-      const results = await votingInstance.results();
-      console.log(results);
-      assert.equal(results.totalVotes, 2);
+      await votingInstance.vote(1);
+      const voter = await votingInstance.getVoterDetails()
+      
+      assert.equal(voter[0], true);
+    });
+
+    it('should the voter not vote more than once', async () => {
+      await expectRevert(
+        votingInstance.vote(0),
+        'Solo se permite emitir un voto por persona...!!!'
+      );
     });
 
     it('should not vote after end date', async () => {
-      await time.increase(500);
+      await time.increase(90000);
       await expectRevert(
         votingInstance.vote(0),
         'El periodo de votación finalizo'
       );
     });
-
-    it('should the voter not vote more than once', () => {
-
-    })
   });
 
   describe('Results function', () => {
-    
-  })
-})
+    it('should return total votes emmited', async () => {
+      const results = await votingInstance.results();
+
+      assert.equal(results[0], 1);
+    });
+
+    // it('should return total votes for options', async () => {
+    //   const results = await votingInstance.results();
+
+    //   console.log(results);
+    // })
+  });
+});
