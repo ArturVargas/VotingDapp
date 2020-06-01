@@ -66,11 +66,5 @@ contract('Voting', (accounts) => {
 
       assert.equal(results[0], 1);
     });
-
-    // it('should return total votes for options', async () => {
-    //   const results = await votingInstance.results();
-
-    //   console.log(results);
-    // })
   });
 });
