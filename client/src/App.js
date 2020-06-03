@@ -4,6 +4,7 @@ import getWeb3 from "./getWeb3";
 
 import "./App.css";
 import Navbar from "./components/Navbar";
+import Home from "./containers/Home";
 
 class App extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null };
@@ -41,8 +42,9 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <div className="App">
+      <div>
         <Navbar />
+        <Home />
       </div>
     );
   }

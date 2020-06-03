@@ -4,11 +4,11 @@ import VoteLogo from '../icons/Vote';
 import Avatar from './Avatar';
 
 const Navbar = ({ account }) => (
-  <React.Fragment>
+  <div className="mb-5 pb-5">
     <nav className="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
       <a className="navbar-brand" href="/">
-        <img src={ VoteLogo } width="50" height="auto" className="d-inline-block align-top" alt="" />
-          TwitChain
+        <VoteLogo className="d-inline-block align-top" />
+          <span className="mx-2"> VotingDapp </span>
       </a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
@@ -29,7 +29,7 @@ const Navbar = ({ account }) => (
         </ul>
       </div>
     </nav>
-  </React.Fragment>
+  </div>
 );
 
 export default Navbar;
