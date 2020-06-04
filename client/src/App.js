@@ -37,6 +37,17 @@ class App extends Component {
     }
   };
 
+  options = [
+    {
+      id: 0,
+      numOfVotes: []
+    },
+    {
+      id: 1,
+      numOfVotes: []
+    }
+  ];
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
@@ -44,7 +55,7 @@ class App extends Component {
     return (
       <div>
         <Navbar />
-        <Home />
+        <Home options={this.options} />
       </div>
     );
   }

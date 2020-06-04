@@ -1,3 +1,14 @@
 {
-  "title": "Consulta de Ensayo para la revocación de Mandato"
+  "title": "Consulta de Ensayo para la revocación de Mandato",
+  "description": "Esta es una votación no oficial, hecha en tecnologia Blockchain con el proposito de mostrar sus beneficios",
+  "options": [
+    {
+      "title": "No",
+      "description": "Que se quede a terminar su periodo"
+    },
+    {
+      "title": "Si",
+      "description": "Que sea revocado de su mandato"
+    }
+  ]
 }
