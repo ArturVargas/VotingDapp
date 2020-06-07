@@ -7,16 +7,22 @@ const Card = ({ id, numOfVotes }) => {
   const description = text.options[id].description;
 
   return (
-    <div className="my-4">
+    <div className="row my-4">
       <div className="col-md-6 col-sm-12">
         <div className="card">
           <div className="card-body">
-            <div>
-              <h4 className="card-title">{title}</h4>
-              <p className="card-text">{description}</p>
+            <div className="my-4">
+              <h4 className="card-title text-center">{title}</h4>
+              <p className="card-text text-center my-3">{description}</p>
             </div>
             <button className="btn btn-primary btn-block"> Votar </button>
           </div>
+        </div>
+      </div>
+      <div className="col-md-6 col-sm-12">
+        <div className="jumbotron">
+          <h4 className="card-title">Votos a favor del {title}:</h4>
+          <p className="text-center lead">{numOfVotes.length}</p>
         </div>
       </div>
     </div>

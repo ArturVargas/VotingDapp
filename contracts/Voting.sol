@@ -22,7 +22,7 @@ contract Voting {
     constructor() public {
         admin = msg.sender;
         // Tiempo que durará la votación.
-        votingEndDate = now + 1 days;
+        votingEndDate = now + 15 days;
 
         address[] memory emptyArray;
 

@@ -40,11 +40,11 @@ class App extends Component {
   options = [
     {
       id: 0,
-      numOfVotes: []
+      numOfVotes: [1,1,1,1]
     },
     {
       id: 1,
-      numOfVotes: []
+      numOfVotes: [1,1]
     }
   ];
 

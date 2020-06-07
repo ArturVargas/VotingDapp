@@ -19,6 +19,10 @@ const Home = ({ options }) => {
           })
         )
       }
+      <div className="text-center">
+        <h4 className="card-title">{text.totalVotes}</h4>
+        <p className="lead"> 6 </p>
+      </div>
     </div>
   )
 };
