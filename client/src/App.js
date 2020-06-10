@@ -9,7 +9,13 @@ import Spinner from "./components/Spinner";
 import Home from "./containers/Home";
 
 class App extends Component {
-  state = { account: '', votingInstance: null, options: [], loading: true };
+  state = { 
+    account: '',
+    votingInstance: null,
+    options: [],
+    totalVotes: 0,
+    loading: true
+  };
 
   componentDidMount = async () => {
     try {
@@ -19,7 +25,7 @@ class App extends Component {
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
       this.setState({ account: accounts[0] });
-      console.log(this.state.account);
+     
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = Voting.networks[networkId];
@@ -29,6 +35,9 @@ class App extends Component {
       );
       this.setState({ votingInstance });
       const getOptions = await votingInstance.methods.getOptions().call();
+      const getResults = await votingInstance.methods.results().call();
+      console.log(getResults);
+      this.setState({ totalVotes: getResults[0] });
       for(let i=0; i < getOptions; i++) {
         const option = await votingInstance.methods.options(i).call();
         this.setState({ options: [...this.state.options, { id: option, numOfVotes: [] }]})
@@ -43,6 +52,20 @@ class App extends Component {
     }
   };
 
+  emmitedVote(idx){
+    console.log(idx);
+    this.setState({ loading: true });
+    this.state.votingInstance.methods.vote(idx).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      console.log(receipt);
+      this.setState({ loading: false });
+    })
+  }
+
+  constructor() {
+    super()
+    this.emmitedVote = this.emmitedVote.bind(this);
+  }
   render() {
     return (
       <div>
@@ -50,7 +73,11 @@ class App extends Component {
         {
           !this.state.votingInstance || this.state.loading
           ? <Spinner />
-          : <Home options={this.state.options} />
+          : <Home 
+              options={this.state.options}
+              totalVotes={this.state.totalVotes} 
+              emmitedVote={this.emmitedVote}
+            />
         }
       </div>
     );

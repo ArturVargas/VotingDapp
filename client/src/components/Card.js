@@ -2,7 +2,7 @@ import React from 'react';
 
 import text from '../text.json';
 
-const Card = ({ id, numOfVotes }) => {
+const Card = ({ id, numOfVotes, emmitedVote }) => {
   const title = text.options[id].title;
   const description = text.options[id].description;
 
@@ -15,7 +15,12 @@ const Card = ({ id, numOfVotes }) => {
               <h4 className="card-title text-center">{title}</h4>
               <p className="card-text text-center my-3">{description}</p>
             </div>
-            <button className="btn btn-primary btn-block"> Votar </button>
+            <button className="btn btn-primary btn-block"
+              name={id} 
+              onClick={(e) => { emmitedVote(e.target.name, id) }}
+            > 
+              Votar 
+            </button>
           </div>
         </div>
       </div>

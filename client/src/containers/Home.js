@@ -4,7 +4,7 @@ import text from '../text.json';
 
 import Card from '../components/Card';
 
-const Home = ({ options }) => {
+const Home = ({ options, totalVotes, emmitedVote }) => {
   console.log(options);
   return (
     <div className="container my-5">
@@ -14,14 +14,18 @@ const Home = ({ options }) => {
         options && (
           options.map(option => {
             return (
-              <Card key={option.id} {...option} />
+              <Card 
+                key={option.id}
+                emmitedVote={emmitedVote}
+                {...option}
+              />
             );
           })
         )
       }
       <div className="text-center">
         <h4 className="card-title">{text.totalVotes}</h4>
-        <p className="lead"> 6 </p>
+        <p className="lead"> {totalVotes} </p>
       </div>
     </div>
   )
