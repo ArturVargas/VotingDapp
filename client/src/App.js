@@ -24,7 +24,10 @@ class App extends Component {
 
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
-      this.setState({ account: accounts[0] });
+      window.ethereum.on('accountsChanged', () => (
+        window.location.reload()
+      ));
+      this.setState({ account: accounts[0] })
      
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
@@ -36,11 +39,10 @@ class App extends Component {
       this.setState({ votingInstance });
       const getOptions = await votingInstance.methods.getOptions().call();
       const getResults = await votingInstance.methods.results().call();
-      console.log(getResults);
       this.setState({ totalVotes: getResults[0] });
       for(let i=0; i < getOptions; i++) {
         const option = await votingInstance.methods.options(i).call();
-        this.setState({ options: [...this.state.options, { id: option, numOfVotes: [] }]})
+        this.setState({ options: [...this.state.options, { id: option, numOfVotes: getResults[1][option] }]})
       }
       this.setState({ loading: false });
     } catch (error) {
@@ -53,18 +55,24 @@ class App extends Component {
   };
 
   emmitedVote(idx){
-    console.log(idx);
     this.setState({ loading: true });
     this.state.votingInstance.methods.vote(idx).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       console.log(receipt);
       this.setState({ loading: false });
+      window.location.reload();
     })
+  }
+
+  getVoterDetails(){
+    const voterDetails = this.state.votingInstance.methods.getVoterDetails().call();
+    console.log(voterDetails);
   }
 
   constructor() {
     super()
     this.emmitedVote = this.emmitedVote.bind(this);
+    this.voterDetails = this.getVoterDetails.bind(this);
   }
   render() {
     return (

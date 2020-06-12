@@ -27,7 +27,7 @@ const Card = ({ id, numOfVotes, emmitedVote }) => {
       <div className="col-md-6 col-sm-12">
         <div className="jumbotron">
           <h4 className="card-title">Votos a favor del {title}:</h4>
-          <p className="text-center lead">{numOfVotes.length}</p>
+          <p className="text-center lead">{numOfVotes}</p>
         </div>
       </div>
     </div>
