@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Swal from 'sweetalert2';
+
 import Voting from "./contracts/Voting.json";
 import getWeb3 from "./getWeb3";
 
@@ -9,12 +11,13 @@ import Spinner from "./components/Spinner";
 import Home from "./containers/Home";
 
 class App extends Component {
-  state = { 
+  state = {
     account: '',
     votingInstance: null,
     options: [],
     totalVotes: 0,
-    loading: true
+    loading: true,
+    userVoted: false
   };
 
   componentDidMount = async () => {
@@ -28,7 +31,7 @@ class App extends Component {
         window.location.reload()
       ));
       this.setState({ account: accounts[0] })
-     
+
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = Voting.networks[networkId];
@@ -40,39 +43,58 @@ class App extends Component {
       const getOptions = await votingInstance.methods.getOptions().call();
       const getResults = await votingInstance.methods.results().call();
       this.setState({ totalVotes: getResults[0] });
-      for(let i=0; i < getOptions; i++) {
+      for (let i = 0; i < getOptions; i++) {
         const option = await votingInstance.methods.options(i).call();
-        this.setState({ options: [...this.state.options, { id: option, numOfVotes: getResults[1][option] }]})
+        this.setState({ options: [...this.state.options, { id: option, numOfVotes: getResults[1][option] }] })
       }
       this.setState({ loading: false });
     } catch (error) {
       // Catch any errors for any of the above operations.
-      alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`,
-      );
-      console.error(error);
+      Swal.fire({
+        position: 'top-end',
+        title: 'Error!',
+        text: 'Error al Cargar, asegurese de estar en la red Ropsten!!',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
 
-  emmitedVote(idx){
+  emmitedVote(idx) {
     this.setState({ loading: true });
     this.state.votingInstance.methods.vote(idx).send({ from: this.state.account })
-    .once('receipt', (receipt) => {
-      console.log(receipt);
-      this.setState({ loading: false });
-      window.location.reload();
-    })
-  }
-
-  getVoterDetails(){
-    const voterDetails = this.state.votingInstance.methods.getVoterDetails().call();
-    console.log(voterDetails);
+      .once('receipt', async (receipt) => {
+        Swal.fire({
+          position: 'top-end',
+          title: 'Ok!',
+          text: 'Su voto se registro exitosamente',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          this.setState({ loading: false });
+          window.location.reload();
+        });
+      })
+      .on('error', async (error) => {
+        Swal.fire({
+          position: 'top-end',
+          title: 'Error!',
+          text: 'No puedes votar más de una vez..!!',
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          this.setState({ loading: false });
+          window.location.reload();
+        });
+      });
   }
 
   constructor() {
     super()
     this.emmitedVote = this.emmitedVote.bind(this);
-    this.voterDetails = this.getVoterDetails.bind(this);
   }
   render() {
     return (
@@ -80,10 +102,10 @@ class App extends Component {
         <Navbar account={this.state.account} />
         {
           !this.state.votingInstance || this.state.loading
-          ? <Spinner />
-          : <Home 
+            ? <Spinner />
+            : <Home
               options={this.state.options}
-              totalVotes={this.state.totalVotes} 
+              totalVotes={this.state.totalVotes}
               emmitedVote={this.emmitedVote}
             />
         }

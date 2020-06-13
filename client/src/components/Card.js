@@ -2,7 +2,7 @@ import React from 'react';
 
 import text from '../text.json';
 
-const Card = ({ id, numOfVotes, emmitedVote }) => {
+const Card = ({ id, numOfVotes, emmitedVote, userVoted }) => {
   const title = text.options[id].title;
   const description = text.options[id].description;
 

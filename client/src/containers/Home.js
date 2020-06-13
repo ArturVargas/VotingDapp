@@ -4,7 +4,7 @@ import text from '../text.json';
 
 import Card from '../components/Card';
 
-const Home = ({ options, totalVotes, emmitedVote }) => {
+const Home = ({ options, totalVotes, emmitedVote, userVoted }) => {
   console.log(options);
   return (
     <div className="container my-5">
