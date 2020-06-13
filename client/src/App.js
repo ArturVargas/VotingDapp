@@ -16,8 +16,7 @@ class App extends Component {
     votingInstance: null,
     options: [],
     totalVotes: 0,
-    loading: true,
-    userVoted: false
+    loading: true
   };
 
   componentDidMount = async () => {
